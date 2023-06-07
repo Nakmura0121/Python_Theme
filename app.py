@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 import psycopg2
+import db
 
 app = Flask(__name__)
 
@@ -7,10 +8,20 @@ app = Flask(__name__)
 @app.route('/')
 def book_index():
     return render_template('index.html')
-# 新規登録
+
+# user新規登録
 @app.route('/user_register')
 def user_register():
     return render_template('user-register.html')
+
+@app.route('/user_register_exe', methods=['POST'])
+def register_exe():
+    name = request.form.get('name')
+    mail = request.form.get('mail')
+    pw = request.form.get('pw')
+    
+    db.insert_user(name, mail, pw)
+
 
 
 # ログイン
